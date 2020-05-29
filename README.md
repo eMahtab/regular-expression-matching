@@ -5,17 +5,20 @@
 # Implementation 1 : Recursive
 ```java
 class Solution {
-    public boolean isMatch(String text, String pattern) {
-        if (pattern.isEmpty()) return text.isEmpty();
-        boolean first_match = (!text.isEmpty() &&
-                               (pattern.charAt(0) == text.charAt(0) || pattern.charAt(0) == '.'));
-
-        if (pattern.length() >= 2 && pattern.charAt(1) == '*'){
-            return (isMatch(text, pattern.substring(2)) ||
-                    (first_match && isMatch(text.substring(1), pattern)));
+    public boolean isMatch(String s, String p) {
+        if(p.isEmpty())
+            return s.isEmpty();
+        boolean firstMatch = (!s.isEmpty() && 
+                              (s.charAt(0) == p.charAt(0) || p.charAt(0) == '.') );
+           
+        if(p.length() > 1 && p.charAt(1) == '*') {
+            boolean excluding = isMatch(s, p.substring(2));
+            boolean including = firstMatch && isMatch(s.substring(1), p);
+            return excluding || including;    
         } else {
-            return first_match && isMatch(text.substring(1), pattern.substring(1));
-        }
+            return firstMatch && isMatch(s.substring(1), p.substring(1));
+        }    
+        
     }
 }
 ```
